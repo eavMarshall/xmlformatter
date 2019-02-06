@@ -1,5 +1,10 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+## Used the create react app to generate a build to easily run tests
+Started with this project [pretty-print XML](https://gist.github.com/sente/1083506/d2834134cd070dbcc08bf42ee27dabb746a1c54d)
+Imported it to typescript
+Then started writing tests, and fixing the bugs found
+
 ## Available Scripts
 
 In the project directory, you can run:
