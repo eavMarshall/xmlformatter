@@ -1,97 +1,97 @@
 import * as xmlFormatter from "./xmlFormatter";
 
 var createTestFields = (objectName: string) => {
-  return "<"+objectName+"_id>field1</"+objectName+"_id>"
-      + "<field1>field1</field1>"
-      + "<field2>field2</field2>"
-      + "<nullField3/>"
-      + "<nullField4/>"
-      + "<field5>field5</field5>";
+  return "<" + objectName + "_id>field1</" + objectName + "_id>"
+    + "<field1>field1</field1>"
+    + "<field2>field2</field2>"
+    + "<nullField3/>"
+    + "<nullField4/>"
+    + "<field5>field5</field5>";
 }
 
 var createTestObject = (objectName: string) => {
-  return "<"+objectName+">"
-      + createTestFields(objectName)
-      + "</"+objectName+">";
+  return "<" + objectName + ">"
+    + createTestFields(objectName)
+    + "</" + objectName + ">";
 }
 
 var createTestObjects = (objectName: string) => {
-  return "<"+objectName+"s>"
-  + createTestObject(objectName + "1")
-  + createTestObject(objectName + "2")
-  + "<"+objectName+">"+objectName+" with no fields</"+objectName+">"
-  + "</"+objectName+"s>"
+  return "<" + objectName + "s>"
+    + createTestObject(objectName + "1")
+    + createTestObject(objectName + "2")
+    + "<" + objectName + ">" + objectName + " with no fields</" + objectName + ">"
+    + "</" + objectName + "s>"
 }
 
 const indent = xmlFormatter.indentString;
 
 const testObjects1 = {
   testXml: "<object>"
-  + createTestObjects("staff")
-  + createTestObjects("customer")
-  + createTestObjects("appointment")
-  + "</object>",
+    + createTestObjects("staff")
+    + createTestObjects("customer")
+    + createTestObjects("appointment")
+    + "</object>",
 
-  expectedOutput: 
-  "<object>\r\n"
-  + indent.repeat(1) + "<staffs>\r\n"
-  + indent.repeat(2) + "<staff1>\r\n"
-  + indent.repeat(3) + "<staff1_id>field1</staff1_id>\r\n"
-  + indent.repeat(3) + "<field1>field1</field1>\r\n"
-  + indent.repeat(3) + "<field2>field2</field2>\r\n"
-  + indent.repeat(3) + "<nullField3/>\r\n"
-  + indent.repeat(3) + "<nullField4/>\r\n"
-  + indent.repeat(3) + "<field5>field5</field5>\r\n"
-  + indent.repeat(2) + "</staff1>\r\n"
-  + indent.repeat(2) + "<staff2>\r\n"
-  + indent.repeat(3) + "<staff2_id>field1</staff2_id>\r\n"
-  + indent.repeat(3) + "<field1>field1</field1>\r\n"
-  + indent.repeat(3) + "<field2>field2</field2>\r\n"
-  + indent.repeat(3) + "<nullField3/>\r\n"
-  + indent.repeat(3) + "<nullField4/>\r\n"
-  + indent.repeat(3) + "<field5>field5</field5>\r\n"
-  + indent.repeat(2) + "</staff2>\r\n"
-  + indent.repeat(2) + "<staff>staff with no fields</staff>\r\n"
-  + indent.repeat(1) + "</staffs>\r\n"
-  + indent.repeat(1) + "<customers>\r\n"
-  + indent.repeat(2) + "<customer1>\r\n"
-  + indent.repeat(3) + "<customer1_id>field1</customer1_id>\r\n"
-  + indent.repeat(3) + "<field1>field1</field1>\r\n"
-  + indent.repeat(3) + "<field2>field2</field2>\r\n"
-  + indent.repeat(3) + "<nullField3/>\r\n"
-  + indent.repeat(3) + "<nullField4/>\r\n"
-  + indent.repeat(3) + "<field5>field5</field5>\r\n"
-  + indent.repeat(2) + "</customer1>\r\n"
-  + indent.repeat(2) + "<customer2>\r\n"
-  + indent.repeat(3) + "<customer2_id>field1</customer2_id>\r\n"
-  + indent.repeat(3) + "<field1>field1</field1>\r\n"
-  + indent.repeat(3) + "<field2>field2</field2>\r\n"
-  + indent.repeat(3) + "<nullField3/>\r\n"
-  + indent.repeat(3) + "<nullField4/>\r\n"
-  + indent.repeat(3) + "<field5>field5</field5>\r\n"
-  + indent.repeat(2) + "</customer2>\r\n"
-  + indent.repeat(2) + "<customer>customer with no fields</customer>\r\n"
-  + indent.repeat(1) + "</customers>\r\n"
-  + indent.repeat(1) + "<appointments>\r\n"
-  + indent.repeat(2) + "<appointment1>\r\n"
-  + indent.repeat(3) + "<appointment1_id>field1</appointment1_id>\r\n"
-  + indent.repeat(3) + "<field1>field1</field1>\r\n"
-  + indent.repeat(3) + "<field2>field2</field2>\r\n"
-  + indent.repeat(3) + "<nullField3/>\r\n"
-  + indent.repeat(3) + "<nullField4/>\r\n"
-  + indent.repeat(3) + "<field5>field5</field5>\r\n"
-  + indent.repeat(2) + "</appointment1>\r\n"
-  + indent.repeat(2) + "<appointment2>\r\n"
-  + indent.repeat(3) + "<appointment2_id>field1</appointment2_id>\r\n"
-  + indent.repeat(3) + "<field1>field1</field1>\r\n"
-  + indent.repeat(3) + "<field2>field2</field2>\r\n"
-  + indent.repeat(3) + "<nullField3/>\r\n"
-  + indent.repeat(3) + "<nullField4/>\r\n"
-  + indent.repeat(3) + "<field5>field5</field5>\r\n"
-  + indent.repeat(2) + "</appointment2>\r\n"
-  + indent.repeat(2) + "<appointment>appointment with no fields</appointment>\r\n"
-  + indent.repeat(1) + "</appointments>\r\n"
-  + "</object>",
+  expectedOutput:
+    "<object>\r\n"
+    + indent.repeat(1) + "<staffs>\r\n"
+    + indent.repeat(2) + "<staff1>\r\n"
+    + indent.repeat(3) + "<staff1_id>field1</staff1_id>\r\n"
+    + indent.repeat(3) + "<field1>field1</field1>\r\n"
+    + indent.repeat(3) + "<field2>field2</field2>\r\n"
+    + indent.repeat(3) + "<nullField3/>\r\n"
+    + indent.repeat(3) + "<nullField4/>\r\n"
+    + indent.repeat(3) + "<field5>field5</field5>\r\n"
+    + indent.repeat(2) + "</staff1>\r\n"
+    + indent.repeat(2) + "<staff2>\r\n"
+    + indent.repeat(3) + "<staff2_id>field1</staff2_id>\r\n"
+    + indent.repeat(3) + "<field1>field1</field1>\r\n"
+    + indent.repeat(3) + "<field2>field2</field2>\r\n"
+    + indent.repeat(3) + "<nullField3/>\r\n"
+    + indent.repeat(3) + "<nullField4/>\r\n"
+    + indent.repeat(3) + "<field5>field5</field5>\r\n"
+    + indent.repeat(2) + "</staff2>\r\n"
+    + indent.repeat(2) + "<staff>staff with no fields</staff>\r\n"
+    + indent.repeat(1) + "</staffs>\r\n"
+    + indent.repeat(1) + "<customers>\r\n"
+    + indent.repeat(2) + "<customer1>\r\n"
+    + indent.repeat(3) + "<customer1_id>field1</customer1_id>\r\n"
+    + indent.repeat(3) + "<field1>field1</field1>\r\n"
+    + indent.repeat(3) + "<field2>field2</field2>\r\n"
+    + indent.repeat(3) + "<nullField3/>\r\n"
+    + indent.repeat(3) + "<nullField4/>\r\n"
+    + indent.repeat(3) + "<field5>field5</field5>\r\n"
+    + indent.repeat(2) + "</customer1>\r\n"
+    + indent.repeat(2) + "<customer2>\r\n"
+    + indent.repeat(3) + "<customer2_id>field1</customer2_id>\r\n"
+    + indent.repeat(3) + "<field1>field1</field1>\r\n"
+    + indent.repeat(3) + "<field2>field2</field2>\r\n"
+    + indent.repeat(3) + "<nullField3/>\r\n"
+    + indent.repeat(3) + "<nullField4/>\r\n"
+    + indent.repeat(3) + "<field5>field5</field5>\r\n"
+    + indent.repeat(2) + "</customer2>\r\n"
+    + indent.repeat(2) + "<customer>customer with no fields</customer>\r\n"
+    + indent.repeat(1) + "</customers>\r\n"
+    + indent.repeat(1) + "<appointments>\r\n"
+    + indent.repeat(2) + "<appointment1>\r\n"
+    + indent.repeat(3) + "<appointment1_id>field1</appointment1_id>\r\n"
+    + indent.repeat(3) + "<field1>field1</field1>\r\n"
+    + indent.repeat(3) + "<field2>field2</field2>\r\n"
+    + indent.repeat(3) + "<nullField3/>\r\n"
+    + indent.repeat(3) + "<nullField4/>\r\n"
+    + indent.repeat(3) + "<field5>field5</field5>\r\n"
+    + indent.repeat(2) + "</appointment1>\r\n"
+    + indent.repeat(2) + "<appointment2>\r\n"
+    + indent.repeat(3) + "<appointment2_id>field1</appointment2_id>\r\n"
+    + indent.repeat(3) + "<field1>field1</field1>\r\n"
+    + indent.repeat(3) + "<field2>field2</field2>\r\n"
+    + indent.repeat(3) + "<nullField3/>\r\n"
+    + indent.repeat(3) + "<nullField4/>\r\n"
+    + indent.repeat(3) + "<field5>field5</field5>\r\n"
+    + indent.repeat(2) + "</appointment2>\r\n"
+    + indent.repeat(2) + "<appointment>appointment with no fields</appointment>\r\n"
+    + indent.repeat(1) + "</appointments>\r\n"
+    + "</object>",
 }
 
 it("should put all elements on their own line", () => {

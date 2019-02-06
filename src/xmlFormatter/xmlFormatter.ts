@@ -6,7 +6,7 @@ export const parseElemntsToOwnLines = (xmlString: string): string => {
 }
 
 export const removeWhiteSpace = (arrayOfStrings: string[]): string[] => {
-  for(let i = 0; i < arrayOfStrings.length; i++) {
+  for (let i = 0; i < arrayOfStrings.length; i++) {
     arrayOfStrings[i] = arrayOfStrings[i].trim();
   }
 
@@ -28,7 +28,7 @@ export const formatString = (xmlString: string): string => {
   let currentPadding = 0;
   let elementArray = splitElements(xmlString);
 
-  for(let index = 0; index < elementArray.length; index++) {
+  for (let index = 0; index < elementArray.length; index++) {
     let indent = 0;
 
     if (elementArray[index].match(/.+<\/\w[^>]*>$/)) {
