@@ -23,7 +23,7 @@ export const createString = (length: number) => {
   return indentString.repeat(length);
 }
 
-export const formatString = (xmlString: string): string => {
+export const formatXmlString = (xmlString: string): string => {
   let outputString = "";
   let currentPadding = 0;
   let elementArray = splitElements(xmlString);
@@ -44,4 +44,54 @@ export const formatString = (xmlString: string): string => {
   }
 
   return outputString.trim();
+}
+
+const ELEMENT_TYPE = 1;
+const TEXT_TYPE = 3;
+
+export const xmlToJson = (xml: Element) => {
+  let obj: any = {};
+
+	if (xml.nodeType == ELEMENT_TYPE) {
+		if (xml.attributes.length > 0) {
+		obj["@attributes"] = {};
+			for (var j = 0; j < xml.attributes.length; j++) {
+        let attribute = xml.attributes.item(j);
+        if (attribute != null) {
+          obj["@attributes"][attribute.nodeName] = attribute.nodeValue;
+        }
+			}
+		}
+	} else if (xml.nodeType == TEXT_TYPE) {
+		obj = xml.nodeValue;
+	}
+
+	if (xml.hasChildNodes() && xml.childNodes.length === 1 && xml.childNodes[0].nodeType === 3) {
+		obj = xml.childNodes[0].nodeValue;
+	}
+	else if (xml.hasChildNodes()) {
+		for(let i = 0; i < xml.childNodes.length; i++) {
+			let item = <Element> xml.childNodes.item(i);
+			let nodeName = item.nodeName;
+			if (typeof obj[nodeName] == "undefined") {
+				obj[nodeName] = xmlToJson(item);
+			} else {
+				if (typeof obj[nodeName].push == "undefined") {
+					var old = obj[nodeName];
+					obj[nodeName] = [];
+					obj[nodeName].push(old);
+				}
+				obj[nodeName].push(xmlToJson(item));
+			}
+		}
+	}
+	return obj;
+};
+
+export const parseXmlStringToDocument = (xmlString: string) => {
+  return <Element> new DOMParser().parseFromString(xmlString, "text/xml").getRootNode();
+}
+
+export const xmlDocumentToString = (xmlDocument: Element) => {
+  return new XMLSerializer().serializeToString(xmlDocument);
 }

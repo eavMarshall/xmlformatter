@@ -1,6 +1,6 @@
 import * as xmlFormatter from "./xmlFormatter";
 
-var createTestFields = (objectName: string) => {
+const createTestFields = (objectName: string) => {
   return "<" + objectName + "_id>field1</" + objectName + "_id>"
     + "<field1>field1</field1>"
     + "<field2>field2</field2>"
@@ -9,13 +9,13 @@ var createTestFields = (objectName: string) => {
     + "<field5>field5</field5>";
 }
 
-var createTestObject = (objectName: string) => {
+const createTestObject = (objectName: string) => {
   return "<" + objectName + ">"
     + createTestFields(objectName)
     + "</" + objectName + ">";
 }
 
-var createTestObjects = (objectName: string) => {
+const createTestObjects = (objectName: string) => {
   return "<" + objectName + "s>"
     + createTestObject(objectName + "1")
     + createTestObject(objectName + "2")
@@ -24,9 +24,9 @@ var createTestObjects = (objectName: string) => {
 }
 
 const indent = xmlFormatter.indentString;
-let newLine = xmlFormatter.newLine;
+const newLine = xmlFormatter.newLine;
 
-const testObjects1 = {
+export const testObjects1 = {
   testXml: "<object>"
     + createTestObjects("staff")
     + createTestObjects("customer")
@@ -96,25 +96,25 @@ const testObjects1 = {
 }
 
 it("should put all elements on their own line", () => {
-  var output = xmlFormatter.parseElemntsToOwnLines(testObjects1.testXml);
+  const output = xmlFormatter.parseElemntsToOwnLines(testObjects1.testXml);
   expect(output).toBe(testObjects1.expectedOutput.replace(new RegExp(indent, "g"), ""))
 });
 
 it("should remove whitespaces", () => {
-  let testData = [
+  const testData = [
     "   test0   ",
     "   test1",
     "test2   "
   ];
 
-  let output = xmlFormatter.removeWhiteSpace(testData);
+  const output = xmlFormatter.removeWhiteSpace(testData);
   expect(output[0]).toMatch("test0");
   expect(output[1]).toMatch("test1");
   expect(output[2]).toMatch("test2");
 });
 
 it("should split elements", () => {
-  let output = xmlFormatter.splitElements("<a><b></b></a>");
+  const output = xmlFormatter.splitElements("<a><b></b></a>");
   expect(output.length).toBe(4);
   expect(output[0]).toMatch("<a>");
   expect(output[1]).toMatch("<b>");
@@ -130,28 +130,59 @@ it("should create string", () => {
 })
 
 it("should output xml should match expected xml", () => {
-  var output = xmlFormatter.formatString(testObjects1.testXml);
+  const output = xmlFormatter.formatXmlString(testObjects1.testXml);
   expect(output).toMatch(testObjects1.expectedOutput);
 });
 
 it("should be able to handled pretty xml formatted", () => {
-  var prettyFormat = xmlFormatter.formatString(testObjects1.testXml);
-  var output = xmlFormatter.formatString(prettyFormat);
+  const prettyFormat = xmlFormatter.formatXmlString(testObjects1.testXml);
+  const output = xmlFormatter.formatXmlString(prettyFormat);
   expect(output).toMatch(testObjects1.expectedOutput);
 });
 
 it("should be able to handled pretty xml formatted many times", () => {
-  var output = xmlFormatter.formatString(testObjects1.testXml);
+  let output = xmlFormatter.formatXmlString(testObjects1.testXml);
   for (let i = 0; i < 99; i++) {
-    output = xmlFormatter.formatString(output);
+    output = xmlFormatter.formatXmlString(output);
   }
   expect(output).toMatch(testObjects1.expectedOutput);
 });
 
 it("should parse xml with a header", () => {
   let header = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
-  let xmlWithHeader = header + newLine + testObjects1.testXml
-  let expectedOutputWithHeader = header + newLine + testObjects1.expectedOutput
-  var outputWithHeader = xmlFormatter.formatString(xmlWithHeader);
+  const xmlWithHeader = header + newLine + testObjects1.testXml
+  const expectedOutputWithHeader = header + newLine + testObjects1.expectedOutput
+  const outputWithHeader = xmlFormatter.formatXmlString(xmlWithHeader);
   expect(outputWithHeader).toMatch(expectedOutputWithHeader);
+});
+
+it("should parse '<a></a>' to json", () => {
+  const xml = "<a></a>";
+  const xmlDOM = xmlFormatter.parseXmlStringToDocument(xml);
+
+  const output = xmlFormatter.xmlToJson(xmlDOM);
+  expect(JSON.stringify(output)).toMatch('{"a":{}}');
+});
+
+it("should parse '<a>test</a>' to json", () => {
+  const xml = "<a>test</a>";
+  const xmlDOM = xmlFormatter.parseXmlStringToDocument(xml);
+  
+  const output = xmlFormatter.xmlToJson(xmlDOM);
+  expect(JSON.stringify(output)).toMatch('{"a":"test"}');
+});
+
+it("should parse xml with header to json", () => {
+  const xmlDOM = xmlFormatter.parseXmlStringToDocument(testObjects1.testXml);
+  const output = xmlFormatter.xmlToJson(xmlDOM);
+  expect(output["object"]["staffs"]["staff1"]["staff1_id"]).toMatch("field1");
+  expect(output["object"]["staffs"]["staff1"]["field2"]).toMatch("field2");
+
+  const expected = '{"object":{"staffs":{"staff1":{"staff1_id":"field1","field1":"field1","field2":"field2","nullField3":{},"nullField4":{},"field5":"field5"},"staff2":{"staff2_id":"field1","field1":"field1","field2":"field2","nullField3":{},"nullField4":{},"field5":"field5"},"staff":"staff with no fields"},"customers":{"customer1":{"customer1_id":"field1","field1":"field1","field2":"field2","nullField3":{},"nullField4":{},"field5":"field5"},"customer2":{"customer2_id":"field1","field1":"field1","field2":"field2","nullField3":{},"nullField4":{},"field5":"field5"},"customer":"customer with no fields"},"appointments":{"appointment1":{"appointment1_id":"field1","field1":"field1","field2":"field2","nullField3":{},"nullField4":{},"field5":"field5"},"appointment2":{"appointment2_id":"field1","field1":"field1","field2":"field2","nullField3":{},"nullField4":{},"field5":"field5"},"appointment":"appointment with no fields"}}}';
+  expect(JSON.stringify(output)).toMatch(expected);
+});
+
+it("should parse xml string to xml document, then back to string", () => {
+  const xmlDOM = xmlFormatter.parseXmlStringToDocument(testObjects1.testXml);
+  const output = xmlFormatter.xmlDocumentToString(xmlDOM);
 });
